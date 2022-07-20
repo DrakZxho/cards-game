@@ -1,0 +1,120 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+}
+
+#mode-buttons{
+    margin: 0 auto 0 auto;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    gap: 40px;
+    height: 100px;
+}
+
+button{
+    width: 125px;
+    border-radius: 15px;
+    background-color: #80d7ff;
+    border: 3px solid #4c91ec;
+    color: white;
+    font-weight: bold;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+}
+
+#tablero{
+    display: flex;
+    flex-wrap: wrap;
+    width: 1000px;
+    margin: 0 auto 0 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+}
+
+.card-container{
+    width: 175px;
+    height: 175px;
+    background-color: #80d7ff;
+    border: 3px solid #4c91ec;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 150px;
+    font-weight: bold;
+    color: white;
+}
+
+.active{
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+.active:hover{
+    background-color: #ffdd80;
+    border-color: #ecb44c;
+    color: black;
+}
+
+.disabled{
+    background-color: #71b482;
+    border-color: #5a8359;
+}
+
+.selected{
+    background-color: #ecb44c;
+    border-color: #ffdd80;
+}
+
+.cpu{
+    background-color: #5a8359;
+    border-color: #71b482;
+}
+
+.player{
+    background-color: #b571ec;
+    border-color: #8814ac;
+}
+
+.panel{
+    width: 400px;
+    margin: 0 auto 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+}
+
+.flex{
+    display: flex;
+}
+
+.score{
+    width: 125px;
+    font-weight: bold;
+}
+
+#modal-bg{
+    display: none;
+    position: absolute;
+    margin: -50px;
+    width: 120%;
+    height: 120%;
+    background-color: rgba(20, 17, 43, 0.521);
+}
+
+.modal{
+    display: none;
+    position: fixed;
+    z-index: 2;
+    margin: 300px 25%;
+    width: 50%;
+    padding: 50px;
+    background-color: #80d7ff;
+    border: solid 3px #4c91ec;
+    border-radius: 20px;
+}

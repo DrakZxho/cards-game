@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+    <!--file:///D:/raiz/workspace/cardsidesgame/index.html-->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+        <title>Juego de cartas</title>
+        <link rel="icon" href="LogoD.png">
+        <link rel="stylesheet" href="style.css">
+        <style>
+            /* Chrome, Safari, Edge, Opera */
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            
+            /* Firefox */
+            input[type=number] {
+                -moz-appearance: textfield;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" ></script>
+        <script>
+            $(document).ready(function () {
+                $("#normal-mode").addClass("selected");
+                let tableselected = false;
+                let normalvalues = [0,1,1,1,2,2,3,3,4,5,6,7,7,8,9,10];
+                let random = false;
+                let randomvalues = [];
+                let playercards = [];
+                let playerscore = 0;
+                let cpucards = [];
+                let cpuscore = 0;
+                let cardsselected = [];
+                let cards = [];
+                let rcards = [];
+                reset();
+                normalshuffle();
+                
+                $(".card-container").click(function (e) { 
+                    e.preventDefault();
+                    if ($(e.target).hasClass("active") || $(e.target).hasClass("selected")) {
+                        if(($(e.target).hasClass("active") && !tableselected)) {
+                            $(e.target).toggleClass("active player");
+                            tableselected = true;
+                            let value;
+                            cards.forEach(card => {
+                                if($(e.target).attr('id')==card.card){
+                                    value = card.value
+                                    cardsselected.push(card);
+                                    playercards.push(card);
+                                    playerscore += value;
+                                    let i = 0;
+                                    rcards.forEach(rcard => {
+                                        if(rcard.card == $(e.target).attr('id')){
+                                            rcards.splice(i, 1);
+                                        }
+                                        i++;
+                                    });
+                                }
+                            });
+                            $(e.target).html(value);
+                            $("#playerscore").html("JUGADOR: " + playerscore);
+                            $("#cpuscore").html("OPONENTE: " +cpuscore);
+                        }
+                        cputurn();
+                    }
+                });
+
+                $("#normal-mode").click(function (e) { 
+                    e.preventDefault();
+                    reset();
+                    normalshuffle();
+                    $("#normal-mode").addClass("selected");
+                    $("#random-mode").removeClass("selected");
+                });
+
+                $("#random-mode").click(function (e) { 
+                    e.preventDefault();
+                    reset();
+                    randomshuffle();
+                    $("#random-mode").addClass("selected");
+                    $("#normal-mode").removeClass("selected");
+                });
+
+                function cputurn(){
+                    if(rcards.length == 0){
+                        alert((playerscore>cpuscore)?"Ganaste":((playerscore==cpuscore)?"Empate":"Perdiste"));
+                    }else if(tableselected) {
+                        cpuselection();
+                    }
+                }
+
+                function cpuselection(){
+                    let num = Math.floor(Math.random() * 16);
+                    if($("#table-" + num).hasClass("active")){
+                        $("#table-" + num).toggleClass("active cpu");
+                        tableselected = false;
+                        let value;
+                        cards.forEach(card => {
+                            if(card.card == ("table-" + num)){
+                                value = card.value
+                                cardsselected.push(card);
+                                cpucards.push(card);
+                                cpuscore += value;
+                                let i = 0;
+                                rcards.forEach(rcard => {
+                                    if(rcard.card == ("table-" + num)){
+                                        rcards.splice(i, 1);
+                                    }
+                                    i++;
+                                });
+                            }
+                        });
+                        $("#table-" + num).html(value);
+                        $("#playerscore").html("JUGADOR: " + playerscore);
+                        $("#cpuscore").html("OPONENTE: " +cpuscore);
+                    }
+                    cputurn();
+                }
+
+                function normalshuffle(){
+                    let values = normalvalues.sort((a, b) => 0.5 - Math.random());
+                    for(let i = 0; i < 16; i++){
+                        cards.push({card:"table-" + i, value:values[i]});
+                    }
+                    cards.forEach(card => {
+                        rcards.push(card);
+                    });
+                }
+
+                function randomshuffle(){
+                    for(let i = 0; i < 16; i++){
+                        randomvalues.push(Math.floor(Math.random() * 11));
+                    }
+                    let values = randomvalues.sort((a, b) => 0.5 - Math.random());
+                    for(let i = 0; i < 16; i++){
+                        cards.push({card:"table-" + i, value:values[i]});
+                    }
+                    cards.forEach(card => {
+                        rcards.push(card);
+                    });
+                }
+
+                function reset(){
+                    randomvalues = [];
+                    playercards = [];
+                    playerscore = 0;
+                    cpucards = [];
+                    cpuscore = 0;
+                    cardsselected = [];
+                    cards = [];
+                    rcards = [];
+                    for (let i = 0; i < 16; i++) {
+                        let container = $("#table-" + i);
+                        $(container).html("");
+                        $(container).removeClass("player cpu");
+                        $(container).addClass("active");
+                    }
+                    $("#playerscore").html("JUGADOR: " + playerscore);
+                    $("#cpuscore").html("OPONENTE: " +cpuscore);
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <div id="modal-bg">
+            <div id="help-modal" class="modal">
+                asa
+            </div>
+            <div id="result-modal" class="modal">
+                asd
+            </div>
+        </div>
+        <div class="layout">
+            <div id="mode-buttons">
+                <div id="playerscore" class="score"></div>
+                <button id="normal-mode" class="active">NORMAL</button>
+                <button id="help" class="active">AYUDA</button>
+                <button id="random-mode" class="active">ALEATORIO</button>
+                <div id="cpuscore" class="score"></div>
+            </div>
+            <div id="tablero">
+                <div id="table-0" class="card-container active"></div>
+                <div id="table-1" class="card-container active"></div>
+                <div id="table-2" class="card-container active"></div>
+                <div id="table-3" class="card-container active"></div>
+                <div id="table-4" class="card-container active"></div>
+                <div id="table-5" class="card-container active"></div>
+                <div id="table-6" class="card-container active"></div>
+                <div id="table-7" class="card-container active"></div>
+                <div id="table-8" class="card-container active"></div>
+                <div id="table-9" class="card-container active"></div>
+                <div id="table-10" class="card-container active"></div>
+                <div id="table-11" class="card-container active"></div>
+                <div id="table-12" class="card-container active"></div>
+                <div id="table-13" class="card-container active"></div>
+                <div id="table-14" class="card-container active"></div>
+                <div id="table-15" class="card-container active"></div>
+            </div>
+        </div>
+    </body>
+</html>
