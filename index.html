@@ -83,9 +83,14 @@
                     $("#normal-mode").removeClass("selected");
                 });
 
+                $("#help").click(function (e){
+                    e.preventDefault();
+                    info();
+                });
+
                 function cputurn(){
                     if(rcards.length == 0){
-                        alert((playerscore>cpuscore)?"Ganaste":((playerscore==cpuscore)?"Empate":"Perdiste"));
+                        setTimeout(greet,150);
                     }else if(tableselected) {
                         cpuselection();
                     }
@@ -159,6 +164,15 @@
                     }
                     $("#playerscore").html("JUGADOR: " + playerscore);
                     $("#cpuscore").html("OPONENTE: " +cpuscore);
+                }
+
+                function greet(){
+                    alert((playerscore>cpuscore)?"Ganaste":((playerscore==cpuscore)?"Empate":"Perdiste"));
+                }
+
+                function info(){
+                    help = "En el modo normal los valores de las fichas son: 0,1,1,1,2,2,3,3,4,5,6,7,7,8,9,10.\nEn el modo aleatorio los valores son aleatorios entre 0 y 10.";
+                    alert(help);
                 }
             });
         </script>
